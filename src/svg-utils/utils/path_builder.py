@@ -31,7 +31,9 @@ class PathBuilder:
         return self._current_position
 
     def _add_data_path_part(
-        self, command: str, *parameters: Union[float, Tuple[float, float]]
+        self,
+        command: str,
+        *parameters: Union[float, Tuple[float, float]],
     ) -> None:
         """
         Adds a path data part to the path data string.
@@ -52,7 +54,9 @@ class PathBuilder:
             self._data_path_parts.append(command)
 
     def _update_position(
-        self, position: Tuple[float, float], relative: bool = False
+        self,
+        position: Tuple[float, float],
+        relative: bool = False,
     ) -> None:
         """
         Updates the current position.
@@ -69,7 +73,11 @@ class PathBuilder:
         else:
             self._current_position = position
 
-    def _update_x(self, x: float, relative: bool = False) -> None:
+    def _update_x(
+        self,
+        x: float,
+        relative: bool = False,
+    ) -> None:
         """
         Updates the current x position.
 
@@ -85,7 +93,11 @@ class PathBuilder:
         else:
             self._current_position = (x, self._current_position[1])
 
-    def _update_y(self, y: float, relative: bool = False) -> None:
+    def _update_y(
+        self,
+        y: float,
+        relative: bool = False,
+    ) -> None:
         """
         Updates the current y position.
 
@@ -101,7 +113,11 @@ class PathBuilder:
         else:
             self._current_position = (self._current_position[0], y)
 
-    def move_to(self, point: Tuple[float, float], relative: bool = False) -> None:
+    def move_to(
+        self,
+        point: Tuple[float, float],
+        relative: bool = False,
+    ) -> None:
         """
         Move from the current position to a new position and start a new sub-path.
 
@@ -114,7 +130,11 @@ class PathBuilder:
         self._update_position(point, relative)
         self._subpath_start_position = self._current_position
 
-    def line_to(self, point: Tuple[float, float], relative: bool = False) -> None:
+    def line_to(
+        self,
+        point: Tuple[float, float],
+        relative: bool = False,
+    ) -> None:
         """
         Draw a straight line from the current position to a new position.
 
@@ -126,7 +146,11 @@ class PathBuilder:
         self._add_data_path_part(command, point)
         self._update_position(point, relative)
 
-    def horizontal_line_to(self, x: float, relative: bool = False) -> None:
+    def horizontal_line_to(
+        self,
+        x: float,
+        relative: bool = False,
+    ) -> None:
         """
         Draw a horizontal line from the current position to a new x position.
 
@@ -138,7 +162,11 @@ class PathBuilder:
         self._add_data_path_part(command, x)
         self._update_x(x, relative)
 
-    def vertical_line_to(self, y: float, relative: bool = False) -> None:
+    def vertical_line_to(
+        self,
+        y: float,
+        relative: bool = False,
+    ) -> None:
         """
         Draw a vertical line from the current position to a new y position.
 
@@ -208,7 +236,9 @@ class PathBuilder:
         self._update_position(end, relative)
 
     def extend_quadratic_bezier_curve_to(
-        self, end: Tuple[float, float], relative: bool = False
+        self,
+        end: Tuple[float, float],
+        relative: bool = False,
     ) -> None:
         """
         Extend the current quadratic Bézier curve to a new position.
