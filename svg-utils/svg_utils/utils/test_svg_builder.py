@@ -2,7 +2,7 @@ from typing import List, Tuple
 from unittest import mock
 
 import pytest
-from svg_utils.utils.svg_builder import SVGBuilder
+from utils.svg_builder import SVGBuilder
 
 
 class TestSVGBuilder:
