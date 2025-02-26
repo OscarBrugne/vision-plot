@@ -1,6 +1,6 @@
 from typing import List, Tuple, Optional, Dict, Any
 from bottle import Bottle, request, response
-from services.path_to_svg_service import PathToSVGService
+from services import PathToSVGService
 
 
 class PathToSVGController:

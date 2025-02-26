@@ -37,12 +37,12 @@ This will create a virtual environment named `.venv`.
 - **On Windows (CMD)**:
 
   ```bash
-  .\venv\Scripts\activate.bat
+  .\.venv\Scripts\activate.bat
   ```
 
 - **On Windows (PowerShell)**:
   ```powershell
-  .\venv\Scripts\Activate.ps1
+  .\.venv\Scripts\Activate.ps1
   ```
 
 ### **Step 4: Install Dependencies**

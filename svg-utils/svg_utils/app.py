@@ -1,5 +1,5 @@
 from bottle import Bottle, run
-from controllers.path_to_svg_controller import PathToSVGController
+from controllers import PathToSVGController
 
 app: Bottle = Bottle()
 
