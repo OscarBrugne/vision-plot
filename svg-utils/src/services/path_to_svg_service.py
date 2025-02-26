@@ -35,13 +35,7 @@ class PathToSVGService:
             str: SVG as a string
         """
         self._initialize_svg(size, viewbox)
-
-        self.svg_builder.set_size(size)
-        if viewbox:
-            self.svg_builder.set_viewbox(viewbox)
-
         self._add_path_to_svg(points, is_closed_path, stroke, stroke_width)
-
         return self.svg_builder.get_svg_string()
 
     def generate_multiple_line_paths_svg(
@@ -68,10 +62,8 @@ class PathToSVGService:
             str: SVG as a string
         """
         self._initialize_svg(size, viewbox)
-
         for path in paths:
             self._add_path_to_svg(path, is_closed_path, stroke, stroke_width)
-
         return self.svg_builder.get_svg_string()
 
     def _initialize_svg(
