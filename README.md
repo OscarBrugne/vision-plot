@@ -13,7 +13,7 @@ To run a script, follow these steps:
 Open a terminal and navigate to the relevant directory, for example:
 
 ```bash
-cd vision-plot/src/svg-utils
+cd vision-plot/svg-utils/src
 ```
 
 ### **Step 2: Create a Virtual Environment**
@@ -78,7 +78,7 @@ To run unit tests, follow these steps:
 ### **Step 1: Navigate to the Project Directory**
 
 ```bash
-cd vision-plot/src/svg-utils
+cd vision-plot/svg-utils/src
 ```
 
 ### **Step 2: Activate the Virtual Environment**
