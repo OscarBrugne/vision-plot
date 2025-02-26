@@ -1,7 +1,7 @@
 from typing import Tuple
 
 import pytest
-from svg_utils.utils import PathBuilder
+from utils import PathBuilder
 
 
 class TestPathBuilder:
