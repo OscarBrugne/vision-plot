@@ -8,12 +8,28 @@ class PathToSVGController:
 
     def __init__(self):
         """Initialize a new PathToSVGController object."""
-        self.app: Bottle = Bottle()
-        self.svg_service: PathToSVGService = PathToSVGService()
+        self._app: Bottle = Bottle()
+        self._svg_service: PathToSVGService = PathToSVGService()
+        self._register_routes()
 
-        # Register routes
-        self.app.post("/generate-single-path", callback=self.generate_single_path)
-        self.app.post("/generate-multiple-paths", callback=self.generate_multiple_paths)
+    @property
+    def app(self) -> Bottle:
+        """
+        Returns the Bottle app for this controller.
+
+        Returns:
+            Bottle: The Bottle app.
+        """
+        return self._app
+
+    def _register_routes(self) -> None:
+        """
+        Register routes for the controller.
+        """
+        self._app.post("/generate-single-path", callback=self.generate_single_path)
+        self._app.post(
+            "/generate-multiple-paths", callback=self.generate_multiple_paths
+        )
 
     def generate_single_path(self) -> Dict[str, str]:
         """
@@ -49,7 +65,7 @@ class PathToSVGController:
         stroke: str = data.get("stroke", "black")
         stroke_width: int = data.get("stroke_width", 1)
 
-        svg_string: str = self.svg_service.generate_line_path_svg(
+        svg_string: str = self._svg_service.generate_line_path_svg(
             points, size, viewbox, is_closed_path, stroke, stroke_width
         )
 
@@ -90,7 +106,7 @@ class PathToSVGController:
         stroke: str = data.get("stroke", "black")
         stroke_width: int = data.get("stroke_width", 1)
 
-        svg_string: str = self.svg_service.generate_multiple_line_paths_svg(
+        svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
             paths, size, viewbox, is_closed_path, stroke, stroke_width
         )
 

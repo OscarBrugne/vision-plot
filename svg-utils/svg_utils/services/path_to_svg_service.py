@@ -8,8 +8,8 @@ class PathToSVGService:
 
     def __init__(self) -> None:
         """Initialize a new SVGService object."""
-        self.path_builder: PathBuilder = PathBuilder()
-        self.svg_builder: SVGBuilder = SVGBuilder()
+        self._path_builder: PathBuilder = PathBuilder()
+        self._svg_builder: SVGBuilder = SVGBuilder()
 
     def generate_line_path_svg(
         self,
@@ -36,7 +36,7 @@ class PathToSVGService:
         """
         self._initialize_svg(size, viewbox)
         self._add_path_to_svg(points, is_closed_path, stroke, stroke_width)
-        return self.svg_builder.get_svg_string()
+        return self._svg_builder.get_svg_string()
 
     def generate_multiple_line_paths_svg(
         self,
@@ -64,7 +64,7 @@ class PathToSVGService:
         self._initialize_svg(size, viewbox)
         for path in paths:
             self._add_path_to_svg(path, is_closed_path, stroke, stroke_width)
-        return self.svg_builder.get_svg_string()
+        return self._svg_builder.get_svg_string()
 
     def _initialize_svg(
         self,
@@ -78,10 +78,10 @@ class PathToSVGService:
             size (Tuple[int, int]): Size of the SVG image (width, height).
             viewbox (Optional[Tuple[int, int, int, int]]): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
         """
-        self.svg_builder.clear()
-        self.svg_builder.set_size(size)
+        self._svg_builder.clear()
+        self._svg_builder.set_size(size)
         if viewbox:
-            self.svg_builder.set_viewbox(viewbox)
+            self._svg_builder.set_viewbox(viewbox)
 
     def _add_path_to_svg(
         self,
@@ -99,16 +99,16 @@ class PathToSVGService:
             stroke (str): Stroke color.
             stroke_width (int): Stroke width.
         """
-        self.path_builder.clear()
+        self._path_builder.clear()
 
-        self.path_builder.move_to(points[0])
+        self._path_builder.move_to(points[0])
         for point in points[1:]:
-            self.path_builder.line_to(point)
+            self._path_builder.line_to(point)
         if is_closed_path:
-            self.path_builder.close_path()
+            self._path_builder.close_path()
 
-        path_data = self.path_builder.get_data()
+        path_data = self._path_builder.get_data()
 
-        self.svg_builder.add_path(
+        self._svg_builder.add_path(
             path_data, fill="none", stroke=stroke, stroke_width=stroke_width
         )
