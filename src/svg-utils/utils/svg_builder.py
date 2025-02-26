@@ -19,7 +19,7 @@ class SVGBuilder:
             filename (str) : Name of the output SVG file Defaults to "output.svg".
             size (Tuple[Union[float, str], Union[float, str]]) : Size of the SVG image (width, height). Defaults to ("100%", "100%").
             viewbox (Optional[Tuple[int, int, int, int]]) : Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
-            profile (Literal["tiny", "full"]) : The SVG profile to use ("tiny", "basic", or "full"). Defaults to "tiny".
+            profile (Literal["tiny", "full"]) : SVG profile to use ("tiny", "basic", or "full"). Defaults to "tiny".
         """
         self._drawing: svgwrite.Drawing = svgwrite.Drawing(
             filename, size=size, profile=profile
@@ -192,7 +192,7 @@ class SVGBuilder:
         Adds text to the SVG.
 
         Args:
-            text (str) : The text to display.
+            text (str) : Text to display.
             position (Tuple[float, float]) : Position of the text (x, y).
             **presentation_attributes (Dict[str, str]) : Additional SVG attributes such as:
                 - 'font_size': Font size of the text.
@@ -207,7 +207,9 @@ class SVGBuilder:
         self._drawing.add(text_elem)
 
     def add_polygon(
-        self, points: List[Tuple[float, float]], **presentation_attributes: Dict
+        self,
+        points: List[Tuple[float, float]],
+        **presentation_attributes: Dict,
     ) -> None:
         """
         Adds a polygon to the SVG.
