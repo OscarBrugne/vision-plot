@@ -4,18 +4,13 @@ from typing import Tuple
 from svg_utils.utils import PathBuilder
 
 
-@pytest.fixture
-def path_builder() -> PathBuilder:
-    """Fixture to create a PathBuilder instance.
-
-    Returns:
-        PathBuilder: A PathBuilder instance.
-    """
-    return PathBuilder()
-
-
 class TestPathBuilder:
     """Test for the PathBuilder class."""
+
+    @pytest.fixture
+    def path_builder(self) -> PathBuilder:
+        """Fixture to create a PathBuilder instance."""
+        return PathBuilder()
 
     def test_init(self, path_builder: PathBuilder):
         """Test initialization of PathBuilder."""
