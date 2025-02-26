@@ -1,6 +1,6 @@
-import pytest
 from typing import Tuple
 
+import pytest
 from svg_utils.utils import PathBuilder
 
 

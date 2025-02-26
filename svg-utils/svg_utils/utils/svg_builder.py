@@ -1,4 +1,5 @@
-from typing import Dict, Literal, Tuple, Optional, List, Union
+from typing import Dict, List, Literal, Optional, Tuple, Union
+
 import svgwrite
 
 
