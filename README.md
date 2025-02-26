@@ -106,3 +106,57 @@ deactivate
 ```
 
 ---
+
+## **3. API Endpoints**
+
+Here are the available POST endpoints for SVG generation:
+
+### **/svg/generate_single_path**
+
+This endpoint generates an SVG with a single path defined by a set of points.
+
+#### **Request Format**
+
+```
+{
+    "points": [[x1, y1], [x2, y2], ...],
+    "size": [width, height],
+    "viewbox": [x, y, width, height] (optional),
+    "is_closed_path": bool (optional),
+    "stroke": "color" (optional, default "black"),
+    "stroke_width": int (optional, default 1)
+}
+```
+
+#### **Response Format**
+
+```
+{
+    "svg": "<SVG_STRING>"
+}
+```
+
+### **/svg/generate_multiple_paths**
+
+This endpoint generates an SVG with multiple paths defined by sets of points.
+
+#### **Request Format**
+
+```
+{
+    "paths": [[[x1, y1], [x2, y2], ...], [[x1, y1], [x2, y2], ...], ...],
+    "size": [width, height],
+    "viewbox": [x, y, width, height] (optional),
+    "is_closed_path": bool (optional),
+    "stroke": "color" (optional, default "black"),
+    "stroke_width": int (optional, default 1)
+}
+```
+
+#### **Response Format**
+
+```
+{
+    "svg": "<SVG_STRING>"
+}
+```
