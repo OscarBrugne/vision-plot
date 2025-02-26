@@ -254,7 +254,7 @@ class PathBuilder:
 
     def arc_to(
         self,
-        radius: Tuple[float, float],
+        radii: Tuple[float, float],
         rotation: float,
         large_arc: bool,
         sweep: bool,
@@ -265,7 +265,7 @@ class PathBuilder:
         Draw an elliptical arc from the current position to a new position.
 
         Args:
-            radius (Tuple[float, float]): Radii of the ellipse (rx, ry).
+            radii (Tuple[float, float]): Radii of the ellipse (rx, ry).
             rotation (float): Rotation of the ellipse.
             large_arc (bool): Flag to choose the large arc (True) or the small arc (False).
             sweep (bool): Flag to choose the clockwise arc (True) or the counterclockwise arc (False).
@@ -274,7 +274,7 @@ class PathBuilder:
         """
         command = "a" if relative else "A"
         self._add_data_path_part(
-            command, radius, rotation, int(large_arc), int(sweep), end
+            command, radii, rotation, int(large_arc), int(sweep), end
         )
         self._update_position(end, relative)
 
