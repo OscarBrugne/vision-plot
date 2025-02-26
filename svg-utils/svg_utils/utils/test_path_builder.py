@@ -1,184 +1,299 @@
-import unittest
-from path_builder import PathBuilder
+import pytest
+from typing import Tuple
+
+from svg_utils.utils import PathBuilder
 
 
-class TestPathBuilder(unittest.TestCase):
+@pytest.fixture
+def path_builder() -> PathBuilder:
+    """Fixture to create a PathBuilder instance.
+
+    Returns:
+        PathBuilder: A PathBuilder instance.
+    """
+    return PathBuilder()
+
+
+class TestPathBuilder:
     """Test for the PathBuilder class."""
 
-    def setUp(self):
-        """Set up test environment for each test."""
-        self.path_builder = PathBuilder()
-
-    def test_initialization(self):
+    def test_init(self, path_builder: PathBuilder):
         """Test initialization of PathBuilder."""
-        path_data = self.path_builder.get_data()
-        self.assertEqual(path_data, "")
+        assert path_builder.get_data() == ""
 
-    def test_move_to(self):
-        """Test moving to a new position."""
-        self.path_builder.move_to((50, 100))
-        path_data = self.path_builder.get_data()
-        self.assertIn("M 50 100", path_data)
+    @pytest.mark.parametrize(
+        "position, relative, expected",
+        [
+            ((50, 100), False, "M 50 100"),
+            ((50, 100), True, "m 50 100"),
+            ((-50, -100), False, "M -50 -100"),
+            ((-50, -100), True, "m -50 -100"),
+        ],
+    )
+    def test_move_to(
+        self,
+        path_builder: PathBuilder,
+        position: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test moving to a new position (absolute and relative)."""
+        path_builder.move_to(position, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_move_to_relative(self):
-        """Test moving to a new position relative to the current position."""
-        self.path_builder.move_to((50, 100), relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("m 50 100", path_data)
+    @pytest.mark.parametrize(
+        "position, relative, expected",
+        [
+            ((50, 100), False, "L 50 100"),
+            ((50, 100), True, "l 50 100"),
+            ((-50, -100), False, "L -50 -100"),
+            ((-50, -100), True, "l -50 -100"),
+        ],
+    )
+    def test_line_to(
+        self,
+        path_builder: PathBuilder,
+        position: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test drawing a line to a new position (absolute and relative)."""
+        path_builder.line_to(position, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_line_to(self):
-        """Test drawing a line to a new position."""
-        self.path_builder.line_to((50, 100))
-        path_data = self.path_builder.get_data()
-        self.assertIn("L 50 100", path_data)
+    @pytest.mark.parametrize(
+        "position, relative, expected",
+        [
+            (100, False, "H 100"),
+            (100, True, "h 100"),
+            (-100, False, "H -100"),
+            (-100, True, "h -100"),
+        ],
+    )
+    def test_horizontal_line_to(
+        self, path_builder: PathBuilder, position: int, relative: bool, expected: str
+    ):
+        """Test drawing a horizontal line to a new position (absolute and relative)."""
+        path_builder.horizontal_line_to(position, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_line_to_relative(self):
-        """Test drawing a line to a new position relative to the current position."""
-        self.path_builder.line_to((50, 100), relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("l 50 100", path_data)
+    @pytest.mark.parametrize(
+        "position, relative, expected",
+        [
+            (100, False, "V 100"),
+            (100, True, "v 100"),
+            (-100, False, "V -100"),
+            (-100, True, "v -100"),
+        ],
+    )
+    def test_vertical_line_to(
+        self, path_builder: PathBuilder, position: int, relative: bool, expected: str
+    ):
+        """Test drawing a vertical line to a new position (absolute and relative)."""
+        path_builder.vertical_line_to(position, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_horizontal_line_to(self):
-        """Test drawing a horizontal line to a new position."""
-        self.path_builder.horizontal_line_to(100)
-        path_data = self.path_builder.get_data()
-        self.assertIn("H 100", path_data)
+    @pytest.mark.parametrize(
+        "control1, control2, end, relative, expected",
+        [
+            ((100, 150), (50, 250), (300, 350), False, "C 100 150 50 250 300 350"),
+            ((100, 150), (50, 250), (300, 350), True, "c 100 150 50 250 300 350"),
+            ((-100, -150), (50, 250), (300, 350), False, "C -100 -150 50 250 300 350"),
+            ((-100, -150), (50, 250), (300, 350), True, "c -100 -150 50 250 300 350"),
+        ],
+    )
+    def test_cubic_bezier_curve_to(
+        self,
+        path_builder: PathBuilder,
+        control1: Tuple[int, int],
+        control2: Tuple[int, int],
+        end: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test drawing a cubic Bezier curve to a new position (absolute and relative)."""
+        path_builder.cubic_bezier_curve_to(control1, control2, end, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_horizontal_line_to_relative(self):
-        """Test drawing a horizontal line to a new position relative to the current position."""
-        self.path_builder.horizontal_line_to(100, relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("h 100", path_data)
+    @pytest.mark.parametrize(
+        "control2, end, relative, expected",
+        [
+            ((50, 250), (300, 350), False, "S 50 250 300 350"),
+            ((50, 250), (300, 350), True, "s 50 250 300 350"),
+            ((-50, -250), (300, 350), False, "S -50 -250 300 350"),
+            ((-50, -250), (300, 350), True, "s -50 -250 300 350"),
+        ],
+    )
+    def test_extend_cubic_bezier_curve_to(
+        self,
+        path_builder: PathBuilder,
+        control2: Tuple[int, int],
+        end: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test extending a cubic Bezier curve to a new position (absolute and relative)."""
+        path_builder.extend_cubic_bezier_curve_to(control2, end, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_vertical_line_to(self):
-        """Test drawing a vertical line to a new position."""
-        self.path_builder.vertical_line_to(100)
-        path_data = self.path_builder.get_data()
-        self.assertIn("V 100", path_data)
+    @pytest.mark.parametrize(
+        "control, end, relative, expected",
+        [
+            ((100, 150), (200, 250), False, "Q 100 150 200 250"),
+            ((100, 150), (200, 250), True, "q 100 150 200 250"),
+            ((-100, -150), (200, 250), False, "Q -100 -150 200 250"),
+            ((-100, -150), (200, 250), True, "q -100 -150 200 250"),
+        ],
+    )
+    def test_quadratic_bezier_curve_to(
+        self,
+        path_builder: PathBuilder,
+        control: Tuple[int, int],
+        end: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test drawing a quadratic Bezier curve to a new position (absolute and relative)."""
+        path_builder.quadratic_bezier_curve_to(control, end, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_vertical_line_to_relative(self):
-        """Test drawing a vertical line to a new position relative to the current position."""
-        self.path_builder.vertical_line_to(100, relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("v 100", path_data)
+    @pytest.mark.parametrize(
+        "end, relative, expected",
+        [
+            ((200, 250), False, "T 200 250"),
+            ((200, 250), True, "t 200 250"),
+            ((-200, -250), False, "T -200 -250"),
+            ((-200, -250), True, "t -200 -250"),
+        ],
+    )
+    def test_extend_quadratic_bezier_curve_to(
+        self,
+        path_builder: PathBuilder,
+        end: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test extending a quadratic Bezier curve to a new position (absolute and relative)."""
+        path_builder.extend_quadratic_bezier_curve_to(end, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_cubic_bezier_curve_to(self):
-        """Test drawing a cubic Bezier curve to a new position."""
-        self.path_builder.cubic_bezier_curve_to((100, 150), (50, 250), (300, 350))
-        path_data = self.path_builder.get_data()
-        self.assertIn("C 100 150 50 250 300 350", path_data)
+    @pytest.mark.parametrize(
+        "radii, rotation, large_arc, sweep, end, relative, expected",
+        [
+            ((50, 25), 20, True, False, (100, 150), False, "A 50 25 20 1 0 100 150"),
+            ((50, 25), 20, True, False, (100, 150), True, "a 50 25 20 1 0 100 150"),
+            (
+                (-50, -25),
+                20,
+                False,
+                True,
+                (-100, -150),
+                False,
+                "A -50 -25 20 0 1 -100 -150",
+            ),
+            (
+                (-50, -25),
+                20,
+                False,
+                True,
+                (-100, -150),
+                True,
+                "a -50 -25 20 0 1 -100 -150",
+            ),
+        ],
+    )
+    def test_arc_to(
+        self,
+        path_builder: PathBuilder,
+        radii: int,
+        rotation: int,
+        large_arc: bool,
+        sweep: bool,
+        end: Tuple[int, int],
+        relative: bool,
+        expected: str,
+    ):
+        """Test drawing an arc to a new position (absolute and relative)."""
+        path_builder.arc_to(radii, rotation, large_arc, sweep, end, relative)
+        path_data = path_builder.get_data()
+        assert expected in path_data
 
-    def test_cubic_bezier_curve_to_relative(self):
-        """Test drawing a cubic Bezier curve to a new position relative to the current position."""
-        self.path_builder.cubic_bezier_curve_to(
-            (100, 150), (50, 250), (300, 350), relative=True
-        )
-        path_data = self.path_builder.get_data()
-        self.assertIn("c 100 150 50 250 300 350", path_data)
-
-    def test_extend_cubic_bezier_curve_to(self):
-        """Test extending a cubic Bezier curve to a new position."""
-        self.path_builder.extend_cubic_bezier_curve_to((50, 250), (300, 350))
-        path_data = self.path_builder.get_data()
-        self.assertIn("S 50 250 300 350", path_data)
-
-    def test_extend_cubic_bezier_curve_to_relative(self):
-        """Test extending a cubic Bezier curve to a new position relative to the current position."""
-        self.path_builder.extend_cubic_bezier_curve_to(
-            (50, 250), (300, 350), relative=True
-        )
-        path_data = self.path_builder.get_data()
-        self.assertIn("s 50 250 300 350", path_data)
-
-    def test_quadratic_bezier_curve_to(self):
-        """Test drawing a quadratic Bezier curve to a new position."""
-        self.path_builder.quadratic_bezier_curve_to((100, 150), (200, 250))
-        path_data = self.path_builder.get_data()
-        self.assertIn("Q 100 150 200 250", path_data)
-
-    def test_quadratic_bezier_curve_to_relative(self):
-        """Test drawing a quadratic Bezier curve to a new position relative to the current position."""
-        self.path_builder.quadratic_bezier_curve_to(
-            (100, 150), (200, 250), relative=True
-        )
-        path_data = self.path_builder.get_data()
-        self.assertIn("q 100 150 200 250", path_data)
-
-    def test_extend_quadratic_bezier_curve_to(self):
-        """Test extending a quadratic Bezier curve to a new position."""
-        self.path_builder.extend_quadratic_bezier_curve_to((200, 250))
-        path_data = self.path_builder.get_data()
-        self.assertIn("T 200 250", path_data)
-
-    def test_extend_quadratic_bezier_curve_to_relative(self):
-        """Test extending a quadratic Bezier curve to a new position relative to the current position."""
-        self.path_builder.extend_quadratic_bezier_curve_to((200, 250), relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("t 200 250", path_data)
-
-    def test_arc_to(self):
-        """Test drawing an arc to a new position."""
-        self.path_builder.arc_to((50, 25), 20, True, False, (100, 150))
-        path_data = self.path_builder.get_data()
-        self.assertIn("A 50 25 20 1 0 100 150", path_data)
-
-    def test_arc_to_relative(self):
-        """Test drawing an arc to a new position relative to the current position."""
-        self.path_builder.arc_to((50, 25), 20, True, False, (100, 150), relative=True)
-        path_data = self.path_builder.get_data()
-        self.assertIn("a 50 25 20 1 0 100 150", path_data)
-
-    def test_close_path(self):
+    def test_close_path(self, path_builder: PathBuilder):
         """Test closing the path."""
-        self.path_builder.close_path()
-        path_data = self.path_builder.get_data()
-        self.assertIn("Z", path_data)
+        path_builder.close_path()
+        path_data = path_builder.get_data()
+        assert "Z" in path_data
 
-    def test_clear(self):
+    def test_clear(self, path_builder: PathBuilder):
         """Test clearing the path data."""
-        self.path_builder.move_to((100, 100))
-        self.path_builder.line_to((200, 100))
-        self.path_builder.clear()
-        path_data = self.path_builder.get_data()
-        self.assertEqual(path_data, "")
+        path_builder.move_to((100, 100))
+        path_builder.line_to((200, 100))
+        path_builder.clear()
+        path_data = path_builder.get_data()
+        assert path_data == ""
 
-    def test_subpath_start_position(self):
+    @pytest.mark.parametrize(
+        "initial_position, expected",
+        [
+            ((100, 150), (100, 150)),
+            ((-100, -150), (-100, -150)),
+        ],
+    )
+    def test_subpath_start_position(
+        self,
+        path_builder: PathBuilder,
+        initial_position: Tuple[int, int],
+        expected: Tuple[int, int],
+    ):
         """Test retrieving the start position of the current sub-path."""
-        self.path_builder.move_to((100, 150))
-        self.assertEqual(self.path_builder.subpath_start_position, (100, 150))
+        path_builder.move_to(initial_position)
+        assert path_builder.subpath_start_position == expected
 
-    def test_subpath_start_position_after_move(self):
+    def test_subpath_start_position_after_move(
+        self,
+        path_builder: PathBuilder,
+    ):
         """Test that the subpath start position updates correctly after moving."""
-        self.path_builder.move_to((100, 150))
-        self.path_builder.line_to((200, 250))
-        self.assertEqual(self.path_builder.subpath_start_position, (100, 150))
+        path_builder.move_to((100, 150))
+        path_builder.line_to((200, 250))
+        assert path_builder.subpath_start_position == (100, 150)
 
-    def test_subpath_start_position_after_new_subpath(self):
+    def test_subpath_start_position_after_new_subpath(self, path_builder: PathBuilder):
         """Test that the subpath start position updates correctly after creating a new sub-path."""
-        self.path_builder.move_to((100, 150))
-        self.path_builder.line_to((200, 250))
-        self.path_builder.close_path()
-        self.path_builder.move_to((125, 300))
-        self.assertEqual(self.path_builder.subpath_start_position, (125, 300))
+        path_builder.move_to((100, 150))
+        path_builder.line_to((200, 250))
+        path_builder.close_path()
+        path_builder.move_to((125, 300))
+        assert path_builder.subpath_start_position == (125, 300)
 
-    def test_current_position(self):
+    @pytest.mark.parametrize(
+        "initial_position, expected",
+        [
+            ((100, 150), (100, 150)),
+            ((-100, -150), (-100, -150)),
+        ],
+    )
+    def test_current_position(
+        self,
+        path_builder: PathBuilder,
+        initial_position: Tuple[int, int],
+        expected: Tuple[int, int],
+    ):
         """Test retrieving the current position."""
-        self.path_builder.move_to((100, 150))
-        self.assertEqual(self.path_builder.current_position, (100, 150))
+        path_builder.move_to(initial_position)
+        assert path_builder.current_position == expected
 
-    def test_current_position_after_move(self):
-        """Test that the current position updates correctly after moving."""
-        self.path_builder.move_to((100, 150))
-        self.path_builder.line_to((200, 250))
-        self.assertEqual(self.path_builder.current_position, (200, 250))
-
-    def test_current_position_after_close(self):
+    def test_current_position_after_close(self, path_builder: PathBuilder):
         """Test that the current position updates correctly after closing the path."""
-        self.path_builder.move_to((100, 150))
-        self.path_builder.line_to((200, 250))
-        self.path_builder.close_path()
-        self.assertEqual(self.path_builder.current_position, (100, 150))
-
-
-if __name__ == "__main__":
-    unittest.main()
+        path_builder.move_to((100, 150))
+        path_builder.line_to((200, 250))
+        path_builder.close_path()
+        assert path_builder.current_position == (100, 150)
