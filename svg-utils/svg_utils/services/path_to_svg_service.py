@@ -1,6 +1,6 @@
-from typing import List, Tuple, Optional
-from utils import PathBuilder
-from utils import SVGBuilder
+from typing import List, Optional, Tuple
+
+from utils import PathBuilder, SVGBuilder
 
 
 class PathToSVGService:
