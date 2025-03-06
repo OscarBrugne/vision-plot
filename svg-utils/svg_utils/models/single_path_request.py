@@ -1,9 +1,9 @@
 from typing import List, Optional
 
-from .json_parsing_base_model import JsonParsingBaseModel
+from .string_parsing_base_model import StringParsingBaseModel
 
 
-class SinglePathRequest(JsonParsingBaseModel):
+class SinglePathRequest(StringParsingBaseModel):
     """Request model for a single path request."""
 
     points: List[List[int]]

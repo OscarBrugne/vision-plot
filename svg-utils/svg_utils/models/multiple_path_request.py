@@ -1,9 +1,9 @@
 from typing import List, Optional
 
-from .json_parsing_base_model import JsonParsingBaseModel
+from .string_parsing_base_model import StringParsingBaseModel
 
 
-class MultiplePathsRequest(JsonParsingBaseModel):
+class MultiplePathsRequest(StringParsingBaseModel):
     """Request model for a multiple paths request."""
 
     paths: List[List[List[int]]]
