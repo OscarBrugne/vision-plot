@@ -1,12 +1,12 @@
 from typing import Dict
 
 from bottle import Bottle, request, response
-from pydantic import ValidationError
 from models import (
-    SinglePathRequest,
     MultiplePathsRequest,
+    SinglePathRequest,
     generate_validation_error_message,
 )
+from pydantic import ValidationError
 from services import PathToSVGService
 
 
@@ -32,10 +32,28 @@ class PathToSVGController:
 
     def _register_routes(self) -> None:
         """Register routes for the controller."""
+        # /generate-single-path endpoint
+        self._app.route(
+            "/generate-single-path",
+            method="OPTIONS",
+            callback=self._options_generate_single_path,
+        )
         self._app.post("/generate-single-path", callback=self.generate_single_path)
+
+        # /generate-multiple-paths endpoint
+        self._app.route(
+            "/generate-multiple-paths",
+            method="OPTIONS",
+            callback=self._options_generate_multiple_paths,
+        )
         self._app.post(
             "/generate-multiple-paths", callback=self.generate_multiple_paths
         )
+
+    def _options_generate_single_path(self) -> None:
+        """Handle an OPTIONS request for the /generate-single-path endpoint."""
+        response.status = 204
+        response.headers["Access-Control-Allow-Methods"] = "OPTIONS, POST"
 
     def generate_single_path(self) -> Dict[str, str]:
         """
@@ -54,6 +72,9 @@ class PathToSVGController:
         Returns:
             Dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
         """
+        response.headers["Accept"] = "application/x-www-form-urlencoded"
+        response.content_type = "application/json"
+
         if request.content_type != "application/x-www-form-urlencoded":
             response.status = 400
             return {
@@ -79,8 +100,12 @@ class PathToSVGController:
             data.stroke_width,
         )
 
-        response.content_type = "application/json"
         return {"svg": svg_string}
+
+    def _options_generate_multiple_paths(self) -> None:
+        """Handle an OPTIONS request for the /generate-multiple-paths endpoint."""
+        response.status = 204
+        response.headers["Access-Control-Allow-Methods"] = "OPTIONS, POST"
 
     def generate_multiple_paths(self) -> Dict[str, str]:
         """
@@ -99,6 +124,9 @@ class PathToSVGController:
         Returns:
             Dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
         """
+        response.headers["Accept"] = "application/x-www-form-urlencoded"
+        response.content_type = "application/json"
+
         if request.content_type != "application/x-www-form-urlencoded":
             response.status = 400
             return {
@@ -108,8 +136,7 @@ class PathToSVGController:
 
         try:
             data = MultiplePathsRequest.model_validate(request.forms)
-            print(data.model_dump())
-        except Exception as e:
+        except ValidationError as e:
             response.status = 400
             return {
                 "error": "Invalid request data",
@@ -125,5 +152,4 @@ class PathToSVGController:
             data.stroke_width,
         )
 
-        response.content_type = "application/json"
         return {"svg": svg_string}
