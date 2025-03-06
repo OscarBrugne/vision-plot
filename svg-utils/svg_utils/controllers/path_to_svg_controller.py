@@ -91,14 +91,21 @@ class PathToSVGController:
                 "message": generate_validation_error_message(e),
             }
 
-        svg_string: str = self._svg_service.generate_line_path_svg(
-            data.points,
-            data.size,
-            data.viewbox,
-            data.is_closed_path,
-            data.stroke,
-            data.stroke_width,
-        )
+        try:
+            svg_string: str = self._svg_service.generate_line_path_svg(
+                data.points,
+                data.size,
+                data.viewbox,
+                data.is_closed_path,
+                data.stroke,
+                data.stroke_width,
+            )
+        except Exception as e:
+            response.status = 500
+            return {
+                "error": "Internal Server Error",
+                "message": f"An error occurred while generating the SVG: {str(e)}",
+            }
 
         return {"svg": svg_string}
 
@@ -143,13 +150,20 @@ class PathToSVGController:
                 "message": generate_validation_error_message(e),
             }
 
-        svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
-            data.paths,
-            data.size,
-            data.viewbox,
-            data.is_closed_path,
-            data.stroke,
-            data.stroke_width,
-        )
+        try:
+            svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
+                data.paths,
+                data.size,
+                data.viewbox,
+                data.is_closed_path,
+                data.stroke,
+                data.stroke_width,
+            )
+        except Exception as e:
+            response.status = 500
+            return {
+                "error": "Internal Server Error",
+                "message": f"An error occurred while generating the SVG: {str(e)}",
+            }
 
         return {"svg": svg_string}
