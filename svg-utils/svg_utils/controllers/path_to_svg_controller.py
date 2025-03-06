@@ -1,51 +1,13 @@
-import json
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Dict
 
 from bottle import Bottle, request, response
-from pydantic import BaseModel, ValidationError, field_validator
+from pydantic import ValidationError
+from models import (
+    SinglePathRequest,
+    MultiplePathsRequest,
+    generate_validation_error_message,
+)
 from services import PathToSVGService
-
-
-class SinglePathRequest(BaseModel):
-    """Request schema for a single path request."""
-
-    points: List[List[int]]
-    size: List[int]
-    viewbox: Optional[List[int]] = None
-    is_closed_path: bool = False
-    stroke: str = "black"
-    stroke_width: int = 1
-
-    @field_validator("*", mode="before")
-    @classmethod
-    def parse_json_field(cls, value: str) -> Any:
-        try:
-            return json.loads(value)
-        except json.JSONDecodeError as e:
-            raise ValueError(
-                f"Invalid JSON value: '{value}' is not a valid JSON format."
-            ) from e
-
-
-class MultiplePathsRequest(BaseModel):
-    """Request schema for a multiple paths request."""
-
-    paths: List[List[List[int]]]
-    size: List[int]
-    viewbox: Optional[List[int]] = None
-    is_closed_path: bool = False
-    stroke: str = "black"
-    stroke_width: int = 1
-
-    @field_validator("*", mode="before")
-    @classmethod
-    def parse_json_field(cls, value: str) -> Any:
-        try:
-            return json.loads(value)
-        except json.JSONDecodeError as e:
-            raise ValueError(
-                f"Invalid JSON value: '{value}' is not a valid JSON format."
-            ) from e
 
 
 class PathToSVGController:
@@ -74,18 +36,6 @@ class PathToSVGController:
         self._app.post(
             "/generate-multiple-paths", callback=self.generate_multiple_paths
         )
-
-    def _generate_validation_error_message(self, e: ValidationError) -> str:
-        errors = e.errors()
-        error_msgs = []
-        for error in errors:
-            key = error["loc"][0]
-            value = error["input"]
-            msg = error["msg"]
-            error_msgs.append(f"The parameter '{key}:{value}' is invalid: {msg}")
-        error_message = "\n ".join(error_msgs)
-
-        return error_message
 
     def generate_single_path(self) -> Dict[str, str]:
         """
@@ -117,7 +67,7 @@ class PathToSVGController:
             response.status = 400
             return {
                 "error": "Invalid request data",
-                "message": self._generate_validation_error_message(e),
+                "message": generate_validation_error_message(e),
             }
 
         svg_string: str = self._svg_service.generate_line_path_svg(
@@ -163,7 +113,7 @@ class PathToSVGController:
             response.status = 400
             return {
                 "error": "Invalid request data",
-                "message": self._generate_validation_error_message(e),
+                "message": generate_validation_error_message(e),
             }
 
         svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
