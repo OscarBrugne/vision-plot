@@ -6,7 +6,7 @@ from controllers import PathToSVGController
 app: Bottle = Bottle()
 
 path_to_svg_controller = PathToSVGController()
-app.mount("/svg", path_to_svg_controller.app)
+app.mount("", path_to_svg_controller.app)
 
 if __name__ == "__main__":
     host = os.getenv("HOST")

@@ -1,4 +1,3 @@
-from typing import List, Tuple
 from unittest import mock
 
 import pytest
@@ -46,7 +45,7 @@ class TestSVGBuilder:
     def test_set_size(
         self,
         svg_builder: SVGBuilder,
-        size: Tuple[int, int],
+        size: tuple[int, int],
         expected_width: str,
         expected_height: str,
     ) -> None:
@@ -63,7 +62,7 @@ class TestSVGBuilder:
         ],
     )
     def test_set_viewbox(
-        self, svg_builder: SVGBuilder, viewbox: Tuple[int, int, int, int], expected: str
+        self, svg_builder: SVGBuilder, viewbox: tuple[int, int, int, int], expected: str
     ) -> None:
         """Test setting the viewbox for the SVG."""
         svg_builder.set_viewbox((0, 0, 800, 1000))
@@ -79,7 +78,7 @@ class TestSVGBuilder:
     def test_add_circle(
         self,
         svg_builder: SVGBuilder,
-        center: Tuple[int, int],
+        center: tuple[int, int],
         radius: int,
         expected_cx: str,
         expected_cy: str,
@@ -102,8 +101,8 @@ class TestSVGBuilder:
     def test_add_ellipse(
         self,
         svg_builder: SVGBuilder,
-        center: Tuple[int, int],
-        radii: Tuple[int, int],
+        center: tuple[int, int],
+        radii: tuple[int, int],
         expected_cx: str,
         expected_cy: str,
         expected_rx: str,
@@ -127,8 +126,8 @@ class TestSVGBuilder:
     def test_add_rectangle(
         self,
         svg_builder: SVGBuilder,
-        position: Tuple[int, int],
-        size: Tuple[int, int],
+        position: tuple[int, int],
+        size: tuple[int, int],
         expected_x: str,
         expected_y: str,
         expected_width: str,
@@ -152,8 +151,8 @@ class TestSVGBuilder:
     def test_add_line(
         self,
         svg_builder: SVGBuilder,
-        start: Tuple[int, int],
-        end: Tuple[int, int],
+        start: tuple[int, int],
+        end: tuple[int, int],
         expected_x1: str,
         expected_y1: str,
         expected_x2: str,
@@ -199,7 +198,7 @@ class TestSVGBuilder:
         self,
         svg_builder: SVGBuilder,
         text: str,
-        position: Tuple[int, int],
+        position: tuple[int, int],
         expected_x: str,
         expected_y: str,
         expected_text: str,
@@ -224,7 +223,7 @@ class TestSVGBuilder:
     def test_add_polygon(
         self,
         svg_builder: SVGBuilder,
-        points: List[Tuple[int, int]],
+        points: list[tuple[int, int]],
         expected_points: str,
     ) -> None:
         """Test adding a polygon to the SVG."""
@@ -245,7 +244,7 @@ class TestSVGBuilder:
     def test_add_polyline(
         self,
         svg_builder: SVGBuilder,
-        points: List[Tuple[int, int]],
+        points: list[tuple[int, int]],
         expected_points: str,
     ) -> None:
         """Test adding a polyline to the SVG."""

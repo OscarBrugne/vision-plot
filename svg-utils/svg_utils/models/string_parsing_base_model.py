@@ -1,6 +1,6 @@
 import json
 from types import UnionType
-from typing import Any, Tuple, Union, get_args, get_origin
+from typing import Any, Union, get_args, get_origin
 
 from pydantic import BaseModel, ValidationInfo, field_validator
 

@@ -1,5 +1,3 @@
-from typing import List, Optional, Tuple
-
 import pytest
 from svg_utils.services.path_to_svg_service import PathToSVGService
 
@@ -29,9 +27,9 @@ class TestPathToSVGService:
     def test_generate_line_path_svg(
         self,
         path_to_svg_service: PathToSVGService,
-        points: List[Tuple[int, int]],
-        size: Tuple[int, int],
-        viewbox: Optional[Tuple[int, int, int, int]],
+        points: list[tuple[int, int]],
+        size: tuple[int, int],
+        viewbox: tuple[int, int, int, int] | None,
         is_closed_path: bool,
         stroke: str,
         stroke_width: int,
@@ -77,13 +75,13 @@ class TestPathToSVGService:
     def test_generate_multiple_line_paths_svg(
         self,
         path_to_svg_service: PathToSVGService,
-        paths: List[List[Tuple[int, int]]],
-        size: Tuple[int, int],
-        viewbox: Optional[Tuple[int, int, int, int]],
+        paths: list[list[tuple[int, int]]],
+        size: tuple[int, int],
+        viewbox: tuple[int, int, int, int] | None,
         is_closed_path: bool,
         stroke: str,
         stroke_width: int,
-        expected_d_list: Tuple[str, ...],
+        expected_d_list: tuple[str, ...],
     ) -> None:
         """Test the generate_paths_svg method."""
         svg = path_to_svg_service.generate_multiple_line_paths_svg(

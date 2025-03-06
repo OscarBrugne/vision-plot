@@ -1,5 +1,3 @@
-from typing import Dict
-
 from bottle import Bottle, request, response
 from models import (
     MultiplePathsRequest,
@@ -55,7 +53,7 @@ class PathToSVGController:
         response.status = 204
         response.headers["Access-Control-Allow-Methods"] = "OPTIONS, POST"
 
-    def generate_single_path(self) -> Dict[str, str]:
+    def generate_single_path(self) -> dict[str, str]:
         """
         Handle a POST request to generate an SVG with a single path defined by a set of points.
 
@@ -70,16 +68,15 @@ class PathToSVGController:
             }
 
         Returns:
-            Dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
+            dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
         """
-        response.headers["Accept"] = "application/x-www-form-urlencoded"
         response.content_type = "application/json"
 
         if request.content_type != "application/x-www-form-urlencoded":
-            response.status = 400
+            response.status = 415
             return {
-                "error": "Invalid Content-Type",
-                "message": "Expected application/x-www-form-urlencoded",
+                "error": "Unsupported Media Type",
+                "message": "The content type must be 'application/x-www-form-urlencoded'.",
             }
 
         try:
@@ -91,14 +88,21 @@ class PathToSVGController:
                 "message": generate_validation_error_message(e),
             }
 
-        svg_string: str = self._svg_service.generate_line_path_svg(
-            data.points,
-            data.size,
-            data.viewbox,
-            data.is_closed_path,
-            data.stroke,
-            data.stroke_width,
-        )
+        try:
+            svg_string: str = self._svg_service.generate_line_path_svg(
+                data.points,
+                data.size,
+                data.viewbox,
+                data.is_closed_path,
+                data.stroke,
+                data.stroke_width,
+            )
+        except Exception as e:
+            response.status = 500
+            return {
+                "error": "Internal Server Error",
+                "message": f"An error occurred while generating the SVG: {str(e)}",
+            }
 
         return {"svg": svg_string}
 
@@ -107,7 +111,7 @@ class PathToSVGController:
         response.status = 204
         response.headers["Access-Control-Allow-Methods"] = "OPTIONS, POST"
 
-    def generate_multiple_paths(self) -> Dict[str, str]:
+    def generate_multiple_paths(self) -> dict[str, str]:
         """
         Handle a POST request to generate an SVG with multiple paths defined by sets of points.
 
@@ -122,16 +126,15 @@ class PathToSVGController:
             }
 
         Returns:
-            Dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
+            dict[str, str]: A JSON response with the SVG string mapped to the key "svg".
         """
-        response.headers["Accept"] = "application/x-www-form-urlencoded"
         response.content_type = "application/json"
 
         if request.content_type != "application/x-www-form-urlencoded":
-            response.status = 400
+            response.status = 415
             return {
-                "error": "Invalid Content-Type",
-                "message": "Expected application/x-www-form-urlencoded",
+                "error": "Unsupported Media Type",
+                "message": "The content type must be 'application/x-www-form-urlencoded'.",
             }
 
         try:
@@ -143,13 +146,20 @@ class PathToSVGController:
                 "message": generate_validation_error_message(e),
             }
 
-        svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
-            data.paths,
-            data.size,
-            data.viewbox,
-            data.is_closed_path,
-            data.stroke,
-            data.stroke_width,
-        )
+        try:
+            svg_string: str = self._svg_service.generate_multiple_line_paths_svg(
+                data.paths,
+                data.size,
+                data.viewbox,
+                data.is_closed_path,
+                data.stroke,
+                data.stroke_width,
+            )
+        except Exception as e:
+            response.status = 500
+            return {
+                "error": "Internal Server Error",
+                "message": f"An error occurred while generating the SVG: {str(e)}",
+            }
 
         return {"svg": svg_string}

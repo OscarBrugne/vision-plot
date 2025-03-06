@@ -1,5 +1,3 @@
-from typing import Tuple
-
 import pytest
 from utils import PathBuilder
 
@@ -28,7 +26,7 @@ class TestPathBuilder:
     def test_move_to(
         self,
         path_builder: PathBuilder,
-        position: Tuple[int, int],
+        position: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -49,7 +47,7 @@ class TestPathBuilder:
     def test_line_to(
         self,
         path_builder: PathBuilder,
-        position: Tuple[int, int],
+        position: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -104,9 +102,9 @@ class TestPathBuilder:
     def test_cubic_bezier_curve_to(
         self,
         path_builder: PathBuilder,
-        control1: Tuple[int, int],
-        control2: Tuple[int, int],
-        end: Tuple[int, int],
+        control1: tuple[int, int],
+        control2: tuple[int, int],
+        end: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -127,8 +125,8 @@ class TestPathBuilder:
     def test_extend_cubic_bezier_curve_to(
         self,
         path_builder: PathBuilder,
-        control2: Tuple[int, int],
-        end: Tuple[int, int],
+        control2: tuple[int, int],
+        end: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -149,8 +147,8 @@ class TestPathBuilder:
     def test_quadratic_bezier_curve_to(
         self,
         path_builder: PathBuilder,
-        control: Tuple[int, int],
-        end: Tuple[int, int],
+        control: tuple[int, int],
+        end: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -171,7 +169,7 @@ class TestPathBuilder:
     def test_extend_quadratic_bezier_curve_to(
         self,
         path_builder: PathBuilder,
-        end: Tuple[int, int],
+        end: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -212,7 +210,7 @@ class TestPathBuilder:
         rotation: int,
         large_arc: bool,
         sweep: bool,
-        end: Tuple[int, int],
+        end: tuple[int, int],
         relative: bool,
         expected: str,
     ):
@@ -245,8 +243,8 @@ class TestPathBuilder:
     def test_subpath_start_position(
         self,
         path_builder: PathBuilder,
-        initial_position: Tuple[int, int],
-        expected: Tuple[int, int],
+        initial_position: tuple[int, int],
+        expected: tuple[int, int],
     ):
         """Test retrieving the start position of the current sub-path."""
         path_builder.move_to(initial_position)
@@ -279,8 +277,8 @@ class TestPathBuilder:
     def test_current_position(
         self,
         path_builder: PathBuilder,
-        initial_position: Tuple[int, int],
-        expected: Tuple[int, int],
+        initial_position: tuple[int, int],
+        expected: tuple[int, int],
     ):
         """Test retrieving the current position."""
         path_builder.move_to(initial_position)

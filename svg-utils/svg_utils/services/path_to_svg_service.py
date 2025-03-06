@@ -1,5 +1,3 @@
-from typing import List, Optional, Tuple
-
 from utils import PathBuilder, SVGBuilder
 
 
@@ -13,9 +11,9 @@ class PathToSVGService:
 
     def generate_line_path_svg(
         self,
-        points: List[Tuple[int, int]],
-        size: Tuple[int, int],
-        viewbox: Optional[Tuple[int, int, int, int]] = None,
+        points: list[tuple[int, int]],
+        size: tuple[int, int],
+        viewbox: tuple[int, int, int, int] | None = None,
         is_closed_path: bool = False,
         stroke: str = "black",
         stroke_width: int = 1,
@@ -24,9 +22,9 @@ class PathToSVGService:
         Generate SVG string with a single path defined by the given points using line segments to connect them.
 
         Args:
-            points (List[Tuple[int, int]]): List of points to define the path.
-            size (Tuple[int, int]): Size of the SVG image (width, height).
-            viewbox (Optional[Tuple[int, int, int, int]]): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
+            points (list[tuple[int, int]]): list of points to define the path.
+            size (tuple[int, int]): Size of the SVG image (width, height).
+            viewbox (tuple[int, int, int, int] | None): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
             is_closed_path (bool): Whether the path should be closed. Defaults to False.
             stroke (str): Stroke color. Defaults to "black".
             stroke_width (int): Stroke width. Defaults to 1.
@@ -40,9 +38,9 @@ class PathToSVGService:
 
     def generate_multiple_line_paths_svg(
         self,
-        paths: List[List[Tuple[int, int]]],
-        size: Tuple[int, int],
-        viewbox: Optional[Tuple[int, int, int, int]] = None,
+        paths: list[list[tuple[int, int]]],
+        size: tuple[int, int],
+        viewbox: tuple[int, int, int, int] | None = None,
         is_closed_path: bool = False,
         stroke: str = "black",
         stroke_width: int = 1,
@@ -51,9 +49,9 @@ class PathToSVGService:
         Generate SVG string with multiple paths defined by the given list of paths using line segments to connect the points.
 
         Args:
-            paths (List[List[Tuple[int, int]]): List of paths, where each path is a list of points.
-            size (Tuple[int, int]): Size of the SVG image (width, height).
-            viewbox (Optional[Tuple[int, int, int, int]]): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
+            paths (list[list[tuple[int, int]]): list of paths, where each path is a list of points.
+            size (tuple[int, int]): Size of the SVG image (width, height).
+            viewbox (tuple[int, int, int, int] | None): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
             is_closed_path (bool): Whether the paths should be closed. Defaults to False.
             stroke (str): Stroke color. Defaults to "black".
             stroke_width (int): Stroke width. Defaults to 1.
@@ -68,15 +66,15 @@ class PathToSVGService:
 
     def _initialize_svg(
         self,
-        size: Tuple[int, int],
-        viewbox: Optional[Tuple[int, int, int, int]] = None,
+        size: tuple[int, int],
+        viewbox: tuple[int, int, int, int] | None = None,
     ) -> None:
         """
         Initialize the SVG with the given size and viewbox.
 
         Args:
-            size (Tuple[int, int]): Size of the SVG image (width, height).
-            viewbox (Optional[Tuple[int, int, int, int]]): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
+            size (tuple[int, int]): Size of the SVG image (width, height).
+            viewbox (tuple[int, int, int, int] | None): Defines the viewbox for the SVG in the form of a tuple (x, y, width, height). Defaults to None.
         """
         self._svg_builder.clear()
         self._svg_builder.set_size(size)
@@ -85,7 +83,7 @@ class PathToSVGService:
 
     def _add_path_to_svg(
         self,
-        points: List[Tuple[int, int]],
+        points: list[tuple[int, int]],
         is_closed_path: bool,
         stroke: str,
         stroke_width: int,
@@ -94,7 +92,7 @@ class PathToSVGService:
         Add a path to the active SVG.
 
         Args:
-            points (List[Tuple[int, int]]): List of points to define the path.
+            points (list[tuple[int, int]]): list of points to define the path.
             is_closed_path (bool): Whether the path should be closed.
             stroke (str): Stroke color.
             stroke_width (int): Stroke width.
