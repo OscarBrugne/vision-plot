@@ -1,0 +1,127 @@
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <executionhandler>ruby</executionhandler>
+  <dataelements/>
+  <endpoints>
+    <timeout>https://cpee.org/services/timeout.php</timeout>
+    <subprocess>https://cpee.org/flow/start/url/</subprocess>
+    <detect_markers>https://vision-plot.onrender.com/projector-calibration/detect-markers</detect_markers>
+    <calculate_homography_correction>https://vision-plot.onrender.com/projector-calibration/calculate-homography-correction</calculate_homography_correction>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <info>compute_projector_homography</info>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <creator>Christine Ashcreek</creator>
+    <guarded_id/>
+    <author>Christine Ashcreek</author>
+    <model_uuid>f7f61969-dc4d-4ad0-a9f2-02f8fe1c2cc4</model_uuid>
+    <model_version/>
+    <design_dir>Teaching.dir/Prak.dir/TUM-Prak-24-WS.dir/OscarBrugne.dir/ProjectedAR.dir</design_dir>
+    <design_stage>development</design_stage>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a1" endpoint="detect_markers">
+        <parameters>
+          <label>Detect markers</label>
+          <method>:post</method>
+          <arguments>
+            <capture_filepath>!data.capture_filepath</capture_filepath>
+            <aruco_dict_type>aruco_dict_type</aruco_dict_type>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.detected_markers = result["detected_markers"]</finalize>
+          <update output="result"/>
+          <rescue output="result">data.error = result</rescue>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <call id="a2" endpoint="calculate_homography_correction">
+        <parameters>
+          <label>Calculate homography correction</label>
+          <method>:post</method>
+          <arguments>
+            <detected_markers>!data.detected_markers</detected_markers>
+            <real_markers>!data.real_markers</real_markers>
+            <projected_markers>!data.projected_markers</projected_markers>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.homography_correction = result["homography_correction"]</finalize>
+          <update output="result"/>
+          <rescue output="result">data.error = result</rescue>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>
