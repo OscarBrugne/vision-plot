@@ -8,15 +8,15 @@ This project was developed as part of the course **"Advanced Practical Course - 
 
 ### **Pen Plotter**
 
-![Projection before calibration](https://github.com/OscarBrugne/vision-plot/static/car.jpg)
-![Projection after calibration](https://github.com/OscarBrugne/vision-plot/static/car_spiral_sinus_one_line.png)
-![Projected markers after calibration](https://github.com/OscarBrugne/vision-plot/static/car_hilbert_sinus_one_line.png)
+![Projection before calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/car.jpg)
+![Projection after calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/car_spiral_sinus_one_line.png)
+![Projected markers after calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/car_hilbert_sinus_one_line.png)
 
 ### **Projected Augmented Reality**
 
-![Projection before calibration](https://github.com/OscarBrugne/vision-plot/static/projection_before_calibration.png)
-![Projection after calibration](https://github.com/OscarBrugne/vision-plot/static/projection_after_calibration.png)
-![Projected markers after calibration](https://github.com/OscarBrugne/vision-plot/static/projected_markers_after_calibration.png)
+![Projection before calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/projection_before_calibration.png)
+![Projection after calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/projection_after_calibration.png)
+![Projected markers after calibration](https://github.com/OscarBrugne/vision-plot/blob/main/static/projected_markers_after_calibration.png)
 
 ## **1. Running a Script**
 
