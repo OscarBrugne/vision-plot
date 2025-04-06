@@ -1,0 +1,209 @@
+<testset xmlns="http://cpee.org/ns/properties/2.0">
+  <executionhandler>ruby</executionhandler>
+  <dataelements>
+    <image_paths>["/data/images/image_0.jpg","/data/images/image_1.jpg","/data/images/image_2.jpg","/data/images/image_3.jpg"]</image_paths>
+    <config>{"aruco_dict_type":"DICT_5x5_50","plan_size":[1.6,0.9],"projected_image_size":[1600,900],"real_markers":{"0":{"top_left":[0.008,0.008],"size":[0.056,0.056]},"1":{"top_left":[1.536,0.008],"size":[0.056,0.056]},"2":{"top_left":[1.536,0.836],"size":[0.056,0.056]},"3":{"top_left":[0.008,0.836],"size":[0.056,0.056]}},"projected_makers":{"4":{"top_left":[0.772,0.422],"size":[0.056,0.056]},"5":{"top_left":[0.772,0.008],"size":[0.056,0.056]},"6":{"top_left":[1.536,0.422],"size":[0.056,0.056]},"7":{"top_left":[0.772,0.836],"size":[0.056,0.056]},"8":{"top_left":[0.008,0.422],"size":[0.056,0.056]}}}</config>
+  </dataelements>
+  <endpoints>
+    <timeout>https://cpee.org/services/timeout.php</timeout>
+    <subprocess>https://cpee.org/flow/start/url/</subprocess>
+    <apply_homography>https://vision-plot.onrender.com/projector-calibration/apply-homography</apply_homography>
+  </endpoints>
+  <attributes>
+    <guarded>none</guarded>
+    <info>main_project_images</info>
+    <modeltype>CPEE</modeltype>
+    <theme>extended</theme>
+    <guarded_id/>
+    <creator>Christine Ashcreek</creator>
+    <author>Christine Ashcreek</author>
+    <model_uuid>250d417a-c9c7-44b9-b6f2-f0d38c450466</model_uuid>
+    <model_version/>
+    <design_stage>development</design_stage>
+    <design_dir>Teaching.dir/Prak.dir/TUM-Prak-24-WS.dir/OscarBrugne.dir/ProjectedAR.dir</design_dir>
+  </attributes>
+  <description>
+    <description xmlns="http://cpee.org/ns/description/1.0">
+      <call id="a1" endpoint="subprocess">
+        <parameters>
+          <label>Calibrate Projector</label>
+          <method>:post</method>
+          <arguments>
+            <behavior>wait_running</behavior>
+            <url>https://cpee.org/hub/server/Teaching.dir/Prak.dir/TUM-Prak-24-WS.dir/OscarBrugne.dir/ProjectedAR.dir/calibrate_projector.xml</url>
+            <init>
+              <config>!data.config</config>
+            </init>
+            <endpoints/>
+            <attributes/>
+            <customization/>
+          </arguments>
+        </parameters>
+        <code>
+          <prepare/>
+          <finalize output="result">data.homography_correction = result["homography_correction"]</finalize>
+          <update output="result"/>
+          <rescue output="result">data.error = result</rescue>
+        </code>
+        <annotations>
+          <_generic/>
+          <_timing>
+            <_timing_weight/>
+            <_timing_avg/>
+            <explanations/>
+          </_timing>
+          <_shifting>
+            <_shifting_type>Duration</_shifting_type>
+          </_shifting>
+          <_context_data_analysis>
+            <probes/>
+            <ips/>
+          </_context_data_analysis>
+          <report>
+            <url/>
+          </report>
+          <_notes>
+            <_notes_general/>
+          </_notes>
+        </annotations>
+        <documentation>
+          <input/>
+          <output/>
+          <implementation>
+            <description/>
+          </implementation>
+          <code>
+            <description/>
+          </code>
+        </documentation>
+      </call>
+      <manipulate id="a5" label="Prepare the loop">data.i = 0
+data.num_images = image_paths.length</manipulate>
+      <loop mode="pre_test" condition="data.i &lt; data.num_images">
+        <_probability>
+          <_probability_min/>
+          <_probability_max/>
+          <_probability_avg/>
+        </_probability>
+        <call id="a2" endpoint="apply_homography">
+          <parameters>
+            <label>Apply homography</label>
+            <method>:post</method>
+            <arguments>
+              <image_path>!data.image_paths[i]</image_path>
+              <homography>!data.homography_correction</homography>
+            </arguments>
+          </parameters>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+          </documentation>
+        </call>
+        <call id="a4" endpoint="timeout">
+          <parameters>
+            <label>Project image (manual, 5sec)</label>
+            <method>:post</method>
+            <arguments>
+              <timeout>5</timeout>
+            </arguments>
+          </parameters>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+          </documentation>
+        </call>
+        <call id="a3" endpoint="timeout">
+          <parameters>
+            <label>Timeout 5s</label>
+            <method>:post</method>
+            <arguments>
+              <timeout>5</timeout>
+            </arguments>
+          </parameters>
+          <annotations>
+            <_generic/>
+            <_timing>
+              <_timing_weight/>
+              <_timing_avg/>
+              <explanations/>
+            </_timing>
+            <_shifting>
+              <_shifting_type>Duration</_shifting_type>
+            </_shifting>
+            <_context_data_analysis>
+              <probes/>
+              <ips/>
+            </_context_data_analysis>
+            <report>
+              <url/>
+            </report>
+            <_notes>
+              <_notes_general/>
+            </_notes>
+          </annotations>
+          <documentation>
+            <input/>
+            <output/>
+            <implementation>
+              <description/>
+            </implementation>
+          </documentation>
+        </call>
+        <manipulate id="a6" label="i++">data.i += 1</manipulate>
+      </loop>
+    </description>
+  </description>
+  <transformation>
+    <description type="copy"/>
+    <dataelements type="none"/>
+    <endpoints type="none"/>
+  </transformation>
+</testset>
